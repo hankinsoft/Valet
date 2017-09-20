@@ -211,6 +211,14 @@ OSStatus VALAtomicSecItemDelete(__nonnull CFDictionaryRef query)
 /// Programatically grab the required prefix for the shared access group (i.e. Bundle Seed ID). The value for the kSecAttrAccessGroup key in queries for data that is shared between apps must be of the format bundleSeedID.sharedAccessGroup. For more information on the Bundle Seed ID, see https://developer.apple.com/library/ios/qa/qa1713/_index.html
 + (nullable NSString *)_sharedAccessGroupPrefix;
 {
+    NSString *appIdentifierPrefix =
+        [[NSBundle mainBundle] objectForInfoDictionaryKey: @"AppIdentifierPrefix"];
+
+    if(nil != appIdentifierPrefix)
+    {
+        return appIdentifierPrefix;
+    } // End we have an appIdentityPrefix in our plist
+
     NSDictionary *query = @{ (__bridge NSString *)kSecClass : (__bridge NSString *)kSecClassGenericPassword,
                              (__bridge id)kSecAttrAccount : @"SharedAccessGroupAlwaysAccessiblePrefixPlaceholder",
                              (__bridge id)kSecReturnAttributes : @YES,
