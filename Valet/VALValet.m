@@ -216,7 +216,13 @@ OSStatus VALAtomicSecItemDelete(__nonnull CFDictionaryRef query)
 
     if(nil != appIdentifierPrefix)
     {
-        return appIdentifierPrefix;
+        // Value removes the period on the end.
+        appIdentifierPrefix = [appIdentifierPrefix stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"."]];
+
+        if(0 != appIdentifierPrefix.length)
+        {
+            return appIdentifierPrefix;
+        } // End of we have a length
     } // End we have an appIdentityPrefix in our plist
 
     NSDictionary *query = @{ (__bridge NSString *)kSecClass : (__bridge NSString *)kSecClassGenericPassword,
