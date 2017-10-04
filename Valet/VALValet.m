@@ -332,8 +332,10 @@ OSStatus VALAtomicSecItemDelete(__nonnull CFDictionaryRef query)
             NSMutableDictionary *query = [self.baseQuery mutableCopy];
             [query addEntriesFromDictionary:[self _secItemFormatDictionaryWithKey:VALCanAccessKeychainCanaryKey]];
             query[(__bridge id)kSecValueData] = [canaryValue dataUsingEncoding:NSUTF8StringEncoding];
-            (void)VALAtomicSecItemAdd((__bridge CFDictionaryRef)query, NULL);
             
+            OSStatus status = VALAtomicSecItemAdd((__bridge CFDictionaryRef)query, NULL);
+            (void)status;
+
             NSString *const retrievedCanaryValueAfterAdding = [self stringForKey:VALCanAccessKeychainCanaryKey];
             canAccessKeychain = [canaryValue isEqualToString:retrievedCanaryValueAfterAdding];
         }
